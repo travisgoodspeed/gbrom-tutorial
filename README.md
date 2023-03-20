@@ -32,7 +32,7 @@ the light reflects off of the sample rather than transmitting through
 it.
 
 My original photo was too large for Github, so the version that you
-will work with is reduced in resolution.  Lossless compression is
+will work with is reduced in resolution.  Lossy compression is
 avoided because it can confuse the image recognition.
 
 If you produce your own photo of the DMG-01-CPU chip, the instructions
