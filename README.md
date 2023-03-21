@@ -51,7 +51,7 @@ part, as all the features are also available from the GUI.
 
 After you have it running, use MaskRomTool to open `dmg01cpurom.bmp`.
 
-~[First Opening of the Image](screenshots/10-firstopen.png)
+![First Opening of the Image](screenshots/10-firstopen.png)
 
 Notice how a grey crosshair follows your mouse.  This begins straight,
 but it will tilt to match the row and column lines that you place on
