@@ -243,7 +243,7 @@ After all of this, the bits are finally complete!
 ## About the CLI
 
 So far, we've been using this tool in the GUI, but when you get to
-larger projects you'll want to automate some things with the GUI.  By
+larger projects you'll want to automate some things with the CLI.  By
 default it launches the GUI, so you'll want to add `-platform
 offscreen -e` when running it standalone, to both avoid opening
 windows and to exit on completion.
