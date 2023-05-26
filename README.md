@@ -95,8 +95,8 @@ photographs.
 
 ### Placing Columns
 
-While you've marked some columns, the software still doesn't know
-where your bits are because you haven't marked any bits.
+While you've marked some rows, the software still doesn't know
+where your bits are because you haven't marked any columns.
 
 To mark you first column, first click above the bit in your first
 column.  Then, as with a row, move your mouse beneath the last bit of
