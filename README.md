@@ -274,19 +274,40 @@ Arguments:
   json                       JSON lines to open.
 ```
 
+Supposing that we have the ROM as `dmg01cpurom.bmp` and its matching
+`.json` file, we can export the bits from the CLI like this in macOS
+or Linux.  In Windows, we call `maskromtoolcli.exe` instead of
+`maskromtool` so that the console connection is maintained.
+
+```
+dell% maskromtool -platform offscreen -e dmg01cpurom.bmp -a DMG_ROM.txt
+Allocation limit was  128 MB
+Disabling allocation limit.
+Loaded background image of  9000 , 2249
+Done loading, now marking bits.
+Exporting to ASCII.
+dell% 
+```
+
 
 ## Decoding a ROM File
 
 Now that your project is marked up and the bits look accurate, you'll
 need to pass the bitfile along to other tools for decoding.  The best
-of these is [Zorrom](https://github.com/JohnDMcMaster/zorrom), a
-collection of Python scripts by John McMaster.
-
-### Decoding with Zorrom
+of these was [Zorrom](https://github.com/JohnDMcMaster/zorrom), a
+collection of Python scripts by John McMaster, but I've recently
+published GatoROM as part of MaskRomTools as a friendly competitor.
+Let's see how to solve it with both of these tools.
 
 First we need an ASCII file of the ROM bits.  You can generate this
 with File / Export / ASCII in MaskRomTool's GUI or from the CLI with
 `maskromtool -platform offscreen dmg01cpurom.bmp -a DMG_ROM.txt -e`.
+
+
+
+
+### Decoding with Zorrom
+
 
 Then just like in the Zorrom documentation, we can ask Zorrom to
 present us with all decodings of the bits that provide 0x31 as the
@@ -324,4 +345,38 @@ air% r2 -a gb r-180_flipx-1_invert-1_cols-left.bin
 air% 
 ```
 
+
+### Decoding with GatoROM.
+
+
+[GatoROM](https://github.com/travisgoodspeed/maskromtool/blob/master/GATOREADME.md)
+is a bit decoder that ships with MaskRomTool, and it supports all of
+Zorrom's solver modes plus a few of its own.
+
+Here's how to solve for the ROM knowing that the first two bytes are
+`31` and `fe`.  The `-z` flag tells it that we want Zorrom
+compatibility mode, and it accurately identifies three potential
+decodings before writing the correct one to `DMG_ROM.bin`.
+
+```
+dell% gatorom DMG_ROM.txt --solve --solve-bytes "0:31,1:fe" -z -o DMG_ROM.bin
+Grade 50        31 11 47 fe 3e f9 1e 0e         -z --decode-cols-left -i -r 180 --flipx 
+Grade 50        8a fe a8 01 d4 52 b0 a4         -z --decode-squeeze-lr -r 180 --flipx 
+Grade 100       31 fe ff af 21 ff 9f 32         -z --decode-cols-downr -i -r 180 --flipx 
+Exporting       -z --decode-cols-downr -i -r 180 --flipx 
+dell% 
+```
+
+We can also search in other ways.  What if we know that `31 fe ff`
+exists somewhere in the image, but we don't know exactly where?  This
+yields three potential solutions, and we can explore the different
+ones if needed by dumping them to files.
+
+```
+dell% gatorom DMG_ROM.txt --solve --solve-string "31,fe,ff" 
+Grade 100       f5 06 19 78 86 23 05 20         --decode-cols-downl -i -r 0 --flipx 
+Grade 100       31 fe ff af 21 ff 9f 32         --decode-cols-downr -i -r 0 --flipx 
+Grade 100       f5 06 19 78 86 23 05 20         --decode-cols-downl-swap -i -r 0 --flipx 
+dell% 
+``
 
