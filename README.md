@@ -100,7 +100,7 @@ where your bits are because you haven't marked any columns.
 
 To mark you first column, first click above the bit in your first
 column.  Then, as with a row, move your mouse beneath the last bit of
-the column and hit `Shift+C` to place a column line.  (Do **NOT** click
+the column and hit `C` to place a column line.  (Do **NOT** click
 a second time.)
 
 Repeat this by moving your mouse beneath the other last bits and
