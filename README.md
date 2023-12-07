@@ -361,10 +361,10 @@ View/HighlightHexSelection to see where those bits are located in your project f
 ### Decoding with Zorrom
 
 
-Then just like in the Zorrom documentation, we can ask Zorrom to
-present us with all decodings of the bits that provide 0x31 as the
-first byte.  (0x31 is GameBoy's opcode to set the call stack value,
-and it's a reasonable guess as to the first instruction of the ROM.)
+Just like in the Zorrom documentation, we can ask Zorrom to present us
+with all decodings of the bits that provide 0x31 as the first byte.
+(0x31 is GameBoy's opcode to set the call stack value, and it's a
+reasonable guess as to the first instruction of the ROM.)
 
 ```
 air% ./solver.py --bytes 0x31 DMG_ROM.txt DMG_ROM
