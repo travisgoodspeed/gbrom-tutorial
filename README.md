@@ -45,9 +45,16 @@ In this tutorial, we'll be extracting the bits with
 program of mine for rapid bit extraction.
 
 Begin by compiling MaskRomTool and installing it.  If you are
-comfortable with the unix command-line, you will want the executable
-`maskromtool` to be in your `$PATH`.  If not, don't worry about that
-part, as all the features are also available from the GUI.
+comfortable with the unix command-line, you will want the executables
+`maskromtool` and `gatorom` to be in your `$PATH`.  If not, don't
+worry about that part, as all the features are also available from the
+GUI.
+
+On Windows and macOS, you can avoid compiling the code by using a
+[prebuilt
+release](https://github.com/travisgoodspeed/maskromtool/releases).
+These are compiled every few months when the code feels particularly
+stable.
 
 After you have it running, use MaskRomTool to open `dmg01cpurom.bmp`.
 
