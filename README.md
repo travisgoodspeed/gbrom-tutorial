@@ -310,7 +310,52 @@ First we need an ASCII file of the ROM bits.  You can generate this
 with File / Export / ASCII in MaskRomTool's GUI or from the CLI with
 `maskromtool -platform offscreen dmg01cpurom.bmp -a DMG_ROM.txt -e`.
 
+### Decoding with GatoROM.
 
+
+[GatoROM](https://github.com/travisgoodspeed/maskromtool/blob/master/GATOREADME.md)
+is a bit decoder that ships with MaskRomTool, and it supports all of
+Zorrom's solver modes plus a few of its own.
+
+Here's how to solve for the ROM knowing that the first two bytes are
+`31` and `fe`.  The `-z` flag tells it that we want Zorrom
+compatibility mode, and it accurately identifies three potential
+decodings before writing the correct one to `DMG_ROM.bin`.
+
+```
+dell% gatorom DMG_ROM.txt --solve --solve-bytes "0:31,1:fe" -z -o DMG_ROM.bin
+Grade 50        31 11 47 fe 3e f9 1e 0e         -z --decode-cols-left -i -r 180 --flipx 
+Grade 50        8a fe a8 01 d4 52 b0 a4         -z --decode-squeeze-lr -r 180 --flipx 
+Grade 100       31 fe ff af 21 ff 9f 32         -z --decode-cols-downr -i -r 180 --flipx 
+Exporting       -z --decode-cols-downr -i -r 180 --flipx 
+dell% 
+```
+
+We can also search in other ways.  What if we know that `31 fe ff`
+exists somewhere in the image, but we don't know exactly where?  This
+yields three potential solutions, and we can explore the different
+ones if needed by dumping them to files.
+
+```
+dell% gatorom DMG_ROM.txt --solve --solve-string "31,fe,ff" 
+Grade 100       f5 06 19 78 86 23 05 20         --decode-cols-downl -i -r 0 --flipx 
+Grade 100       31 fe ff af 21 ff 9f 32         --decode-cols-downr -i -r 0 --flipx 
+Grade 100       f5 06 19 78 86 23 05 20         --decode-cols-downl-swap -i -r 0 --flipx 
+dell% 
+```
+
+
+
+### Decoding Graphically
+
+GatoROM is also linked into the MaskRomTool GUI, and you can play
+around with settings with Edit/Decoding.
+
+View/HexPreview will show the decoding live in hexadecimal.  After
+selecting some bytes, you can also highlight them with
+View/HighlightHexSelection to see where those bits are located in your project file.
+
+![Screenshot of highlighted bytes in the GameBoy view.](screenshots/hexview.png)
 
 
 ### Decoding with Zorrom
@@ -352,38 +397,4 @@ air% r2 -a gb r-180_flipx-1_invert-1_cols-left.bin
 air% 
 ```
 
-
-### Decoding with GatoROM.
-
-
-[GatoROM](https://github.com/travisgoodspeed/maskromtool/blob/master/GATOREADME.md)
-is a bit decoder that ships with MaskRomTool, and it supports all of
-Zorrom's solver modes plus a few of its own.
-
-Here's how to solve for the ROM knowing that the first two bytes are
-`31` and `fe`.  The `-z` flag tells it that we want Zorrom
-compatibility mode, and it accurately identifies three potential
-decodings before writing the correct one to `DMG_ROM.bin`.
-
-```
-dell% gatorom DMG_ROM.txt --solve --solve-bytes "0:31,1:fe" -z -o DMG_ROM.bin
-Grade 50        31 11 47 fe 3e f9 1e 0e         -z --decode-cols-left -i -r 180 --flipx 
-Grade 50        8a fe a8 01 d4 52 b0 a4         -z --decode-squeeze-lr -r 180 --flipx 
-Grade 100       31 fe ff af 21 ff 9f 32         -z --decode-cols-downr -i -r 180 --flipx 
-Exporting       -z --decode-cols-downr -i -r 180 --flipx 
-dell% 
-```
-
-We can also search in other ways.  What if we know that `31 fe ff`
-exists somewhere in the image, but we don't know exactly where?  This
-yields three potential solutions, and we can explore the different
-ones if needed by dumping them to files.
-
-```
-dell% gatorom DMG_ROM.txt --solve --solve-string "31,fe,ff" 
-Grade 100       f5 06 19 78 86 23 05 20         --decode-cols-downl -i -r 0 --flipx 
-Grade 100       31 fe ff af 21 ff 9f 32         --decode-cols-downr -i -r 0 --flipx 
-Grade 100       f5 06 19 78 86 23 05 20         --decode-cols-downl-swap -i -r 0 --flipx 
-dell% 
-``
 
