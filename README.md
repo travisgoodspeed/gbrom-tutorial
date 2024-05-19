@@ -306,16 +306,17 @@ collection of Python scripts by John McMaster, but I've recently
 published GatoROM as part of MaskRomTools as a friendly competitor.
 Let's see how to solve it with both of these tools.
 
-First we need an ASCII file of the ROM bits.  You can generate this
-with File / Export / ASCII in MaskRomTool's GUI or from the CLI with
-`maskromtool -platform offscreen dmg01cpurom.bmp -a DMG_ROM.txt -e`.
 
-### Decoding with GatoROM.
 
+### Decoding with GatoROM
 
 [GatoROM](https://github.com/travisgoodspeed/maskromtool/blob/master/GATOREADME.md)
 is a bit decoder that ships with MaskRomTool, and it supports all of
 Zorrom's solver modes plus a few of its own.
+
+First we need an ASCII file of the ROM bits.  You can generate this
+with File / Export / ASCII in MaskRomTool's GUI or from the CLI with
+`maskromtool -platform offscreen dmg01cpurom.bmp -a DMG_ROM.txt -e`.
 
 Here's how to solve for the ROM knowing that the first two bytes are
 `31` and `fe`.  The `-z` flag tells it that we want Zorrom
@@ -356,6 +357,15 @@ selecting some bytes, you can also highlight them with
 View/HighlightHexSelection to see where those bits are located in your project file.
 
 ![Screenshot of highlighted bytes in the GameBoy view.](screenshots/hexview.png)
+
+It can be tedious to change so many graphical settings, hoping to find
+the lucky combination.  To help with that, the GUI can list solutions
+from the CLI's solver.  Double-clicking one will reconfigure the
+decoder and update the hex and disassembly views, so that they can be
+quickly searched.
+
+![Graphical solution](screenshots/solver.png)
+
 
 
 ### Decoding with Zorrom
