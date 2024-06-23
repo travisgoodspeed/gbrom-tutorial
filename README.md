@@ -32,8 +32,8 @@ the light reflects off of the sample rather than transmitting through
 it.
 
 My original photo was too large for Github, so the version that you
-will work with is reduced in resolution.  Lossy compression is
-avoided because it can confuse the image recognition.
+will work with is reduced in resolution.  Lossy compression is avoided
+because it can confuse the image recognition.
 
 If you produce your own photo of the DMG-01-CPU chip, the instructions
 here will work just as well.
@@ -60,10 +60,11 @@ After you have it running, use MaskRomTool to open `dmg01cpurom.bmp`.
 
 ![First Opening of the Image](screenshots/10-firstopen.png)
 
-Notice how a grey crosshair follows your mouse.  This begins straight,
-but it will tilt to match the row and column lines that you place on
-the ROM, allowing you to see from one side of your monitor which bits
-will be covered by the other side of your monitor.
+Notice how a grey crosshair follows your mouse.  They begin straight,
+but will soon tilt to match the row and column lines that you place on
+the ROM.  This allows you to predict where repeated rows and columns of the same
+angle will fall, as most images are tilted but most bits are in
+perfect lines.
 
 Notice also that the bits in the ROM come in pairs of regular rows and
 groups of eight regular columns.  In MaskRomTool, you'll be placing
@@ -71,9 +72,28 @@ rows and columns, but there are no strict limits about matching the
 grouping of the original image.  If you find that you can reliably
 place a massive row that crosses the entire width of the image, or a
 massive column that crosses the entire height of the image, feel free
-to do so.
+to do so.  If the image is crooked and you need a very short line to
+work around an error, that's also fine.
 
 ### Navigation
+
+To move around the image, you will use either your mouse or your
+laptop's trackpad.  Mice are preferred because right clicking is a
+little easier.
+
+Drag the background with the middle mouse button to scroll a little
+bit, or use two fingers on the trackpad to pan around the screen.  If
+you hold the shift key, this panning will be much faster.
+
+Zoom is very important for these projects.  The `QAZ` keys handle
+zooming, with `Q` snapping to native resolution, `A` and `Z` zooming
+in and out.  On a mouse, holding `ctrl` and spinning the scroll wheel
+will also adjust the zoom.  With a trackpad, you might pinch to zoom,
+but only if you operating system supports it.
+
+Spend a moment moving around the ROM photograph, guessing at what
+different structures are.  After that, we'll start marking up the
+image.
 
 ### Placing Rows
 
@@ -86,7 +106,7 @@ You could repeat this to place all of the rows, but that would be
 labor intensive and might involve a lot of scrolling for very long
 ones.  Instead, keep your mouse on the right side but move it down a
 little.  When your crosshair lines up with the row, press `Shift+R` or
-the spacebar to drop another row.
+the spacebar to drop another row with the same length and angle.
 
 Repeating this across many rows should mark them out in short order.
 In the following screenshot, I've marked short segments of the first
@@ -98,12 +118,18 @@ to save time and effort.  If straight lines can't cross the entire
 image, then mark shorter lengths or better align your panorama of
 photographs.
 
+If you place a row in the wrong position, there are ways to move it.
+First drag a box with the left mouse button to select one or more
+lines, then drag with the right mouse button to move them.  The arrow
+keys will also move a selection, and the `S` key will set the position
+of a single line to a new end point.
+
 ![Eight short rows marked in the ROM.](screenshots/20-firstrows.png)
 
 ### Placing Columns
 
 While you've marked some rows, the software still doesn't know
-where your bits are because you haven't marked any columns.
+where your bits are because you haven't yet marked any columns.
 
 To mark you first column, first click above the bit in your first
 column.  Then, as with a row, move your mouse beneath the last bit of
@@ -115,6 +141,12 @@ pressing `Shift+C`.  As each column line is dropped across the row
 lines, blue squares will appear over each bit.  The software now knows
 where the bits are, and in the next step we'll teach it to know the
 difference between a one and a zero.
+
+Please double-check that bits are in reasonable positions.  If any of
+the bit boxes are not directly over the bit, select the offending row
+or column and drag with the right mouse button to correct its
+position.  If the angle is wrong, use `D` to erase the line and then
+draw a fresh one.
 
 ![First bits are now recognized.](screenshots/30-firstbits.png)
 
@@ -161,12 +193,12 @@ recognize all of them.
 First, wipe our your previous work by either deleting
 `dmg01cpurom.bmp.json` and opening `dmg01cpurom.bmp` in a fresh
 instance of Mask ROM Tool or bulk erase your lines.  Bulk erasure is
-done by drag-selecting lines and then pressing `Shift+D` to cut them
+performed by drag-selecting lines and then pressing `D` to cut them
 out.
 
 (Strictly speaking, you could also mark the image with many very small
 rows and columns.  The only reason I recommend against that is that
-it takes forever, not that it doesn't work.)
+it takes forever.)
 
 After erasing the lines, drop a row that goes from the far left of the
 screen to the far right.  If you are starting over instead of deleting
@@ -176,10 +208,18 @@ can draw an attempt at a row with `R` and then delete it with `D`,
 without the software forgetting about your first starting position.
 
 After getting the first line drawn, move your mouse down the right
-side of the rom image, hitting `Shift+R` or the space bar whenever you
+side of the photograph, hitting `Shift+R` or the space bar whenever you
 pass a row to drop a line.  If you find that you marked the bit just a
 little off, you can use the `S` key to Set the position of the last
-line, moving it to the new mouse location.
+line, moving it to the new mouse location.  Arrow keys and dragging
+with a right click will also reposition it, with bit values changing
+along with the positions.
+
+If the rows are particularly regular, you might place several at time.
+To do this, select some with the left mouse button and then press
+`Shift+D` to duplicate the collection.  The lines can then be moved to
+the new position with the right click drag, while a duplicate copy
+will remain at the original position.
 
 After drawing the long rows, draw the columns.  Just click once above
 the first bit to set a start point, then hit `C` beneath the last bit
@@ -203,12 +243,13 @@ the end of it.  Before continuing on to decoding the ROM, it's a good
 idea to do some quick sanity checks and make sure that no mistakes
 were made.
 
-The `V` key or DRC / Evaluate Rules rune some quick sanity checks over
-your design.  For example, what if you placed a line wrong and the
-color of a bit was suspiciously close to the threshold?  You might get
-a DRC error like this one, which you could resolve by correcting the
-line placement.  Each Design Rule Check (DRC) violation has a position
-and appears as a yellow box in the GUI.
+The `V` key or DRC / Evaluate Rules to run some quick sanity checks
+over your design.  For example, what if you placed a line wrong and
+the color of a bit was suspiciously close to the threshold?  You might
+get a DRC error like this one, which you could resolve by correcting
+the line placement.  Each Design Rule Check (DRC) violation has a
+position and appears as a yellow box in the GUI.  The `E` key will
+jump to the next error position in the list.
 
 ![A poorly placed column made a bit
 ambigious.](screenshots/70-ambiguous.png)
@@ -263,17 +304,21 @@ Options:
   -h, --help                 Displays help on commandline options.
   --help-all                 Displays help including Qt specific options.
   -v, --version              Displays version information.
+  -V, --verbose              Print verbose debugging messages.
+  --stress                   Stress test bit marking.
   -e, --exit                 Exit after processing arguments.
-  --opengl                   Enable OpenGL.  (Not yet stable.)
+  --disable-opengl           Disable OpenGL.
+  --enable-opengl            Enable OpenGL.
   -d, --drc                  Run default Design Rule Checks.
   -D, --DRC                  Run all Design Rule Checks.
+  --sampler <Default>        Bit Sampling Algorithm.
   --diff-ascii <file>        Compares against ASCII art, for finding errors.
-  -a, --export-ascii <file>  Export ASCII bits for use in ZorRom.
+  -a, --export-ascii <file>  Export ASCII bits.
+  -o, --export <file>        Export ROM bytes.
+  --export-histogram <file>  Export histogram.
   --export-csv <file>        Export CSV bits for use in Matlab or Excel.
   --export-json <file>       Export JSON bit positions.
   --export-python <file>     Export Python arrays.
-  --export-marc4 <file>      Export MARC4 ROM banks, left to right.
-  --export-arm6 <file>       Export ARM6L (MYK82) ROM.
   --export-photo <file>      Export a photograph.
 
 Arguments:
@@ -299,29 +344,69 @@ dell%
 
 ## Decoding a ROM File
 
-Now that your project is marked up and the bits look accurate, you'll
-need to pass the bitfile along to other tools for decoding.  The best
-of these was [Zorrom](https://github.com/JohnDMcMaster/zorrom), a
-collection of Python scripts by John McMaster, but I've recently
-published GatoROM as part of MaskRomTools as a friendly competitor.
-Let's see how to solve it with both of these tools.
+You now have the bits of your project in physical order, but this is
+quite different from the logically ordered bytes that a disassembler
+or emulator would prefer.  We'll first do this graphically, and then
+also see how to do it from the Unix command line.
+
+Before we begin, please install
+[MAME](https://github.com/mamedev/mame/releases) and make sure that
+its disassembler, `unidasm`, is within the PATH.  If you fail to do
+this, the solver will still work, but you'll miss out on seeing the
+disassembled code.
+
+### Decoding Graphically
+
+You can play around with decoding settings manually with
+Edit/Decoding.  Begin by setting the disassembly architecture to
+`LR35902` and the wordsize to `8`.  The flips, rotation, and banking
+will be solved for you in a bit, and the list of Flags at the bottom
+shows you the options that would be passed to
+[GatoROM](https://github.com/travisgoodspeed/maskromtool/blob/master/GATOREADME.md)
+for decoding on the command line.
+
+![Graphical solution](screenshots/decoder.png)
+
+You can solve for particular byte sequences or Yara rules with
+View/Solver.  Double-clicking a solution will reconfigure the decoder
+and update the hex and disassembly views, so that they can be quickly
+searched.
+
+Begin by using the Bytes tap of the Solver to solve for
+`0:31,1:fe,2:ff`, which means that the first three bytes will be `31
+fe ff`.  This is the LR35902 machine code for setting the stack
+pointer to `0xfffe`.  Double clicking on the solution `-z
+--decode-cols-downr -i -r 180 --flipx` will apply those settings to
+the decoder.
+
+![Graphical solution](screenshots/solver.png)
+
+View/HexPreview will show the decoding live in hexadecimal.  After
+selecting some bytes, you can also highlight them with
+View/HighlightHexSelection to see where those bits are located in your
+project file.
+
+![Screenshot of highlighted bytes in the GameBoy view.](screenshots/hexview.png)
+
 
 
 
 ### Decoding with GatoROM
 
 [GatoROM](https://github.com/travisgoodspeed/maskromtool/blob/master/GATOREADME.md)
-is a bit decoder that ships with MaskRomTool, and it supports all of
-Zorrom's solver modes plus a few of its own.
+is a bit decoder that ships with MaskRomTool.  It runs from the
+command line, but under the hood it is powered by the same libraries
+that run in the GUI solver.
 
 First we need an ASCII file of the ROM bits.  You can generate this
 with File / Export / ASCII in MaskRomTool's GUI or from the CLI with
 `maskromtool -platform offscreen dmg01cpurom.bmp -a DMG_ROM.txt -e`.
 
 Here's how to solve for the ROM knowing that the first two bytes are
-`31` and `fe`.  The `-z` flag tells it that we want Zorrom
-compatibility mode, and it accurately identifies three potential
-decodings before writing the correct one to `DMG_ROM.bin`.
+`31` and `fe`.  The `-z` flag tells it that we want
+[Zorrom](https://github.com/JohnDMcMaster/zorrom) compatibility mode,
+and it accurately identifies three potential decodings before writing
+the correct one to `DMG_ROM.bin`.
 
 ```
 dell% gatorom DMG_ROM.txt --solve --solve-bytes "0:31,1:fe" -z -o DMG_ROM.bin
@@ -344,67 +429,4 @@ Grade 100       31 fe ff af 21 ff 9f 32         --decode-cols-downr -i -r 0 --fl
 Grade 100       f5 06 19 78 86 23 05 20         --decode-cols-downl-swap -i -r 0 --flipx 
 dell% 
 ```
-
-
-
-### Decoding Graphically
-
-GatoROM is also linked into the MaskRomTool GUI, and you can play
-around with settings with Edit/Decoding.
-
-View/HexPreview will show the decoding live in hexadecimal.  After
-selecting some bytes, you can also highlight them with
-View/HighlightHexSelection to see where those bits are located in your project file.
-
-![Screenshot of highlighted bytes in the GameBoy view.](screenshots/hexview.png)
-
-It can be tedious to change so many graphical settings, hoping to find
-the lucky combination.  To help with that, the GUI can list solutions
-from the CLI's solver.  Double-clicking one will reconfigure the
-decoder and update the hex and disassembly views, so that they can be
-quickly searched.
-
-![Graphical solution](screenshots/solver.png)
-
-
-
-### Decoding with Zorrom
-
-
-Just like in the Zorrom documentation, we can ask Zorrom to present us
-with all decodings of the bits that provide 0x31 as the first byte.
-(0x31 is GameBoy's opcode to set the call stack value, and it's a
-reasonable guess as to the first instruction of the ROM.)
-
-```
-air% ./solver.py --bytes 0x31 DMG_ROM.txt DMG_ROM
-Loaded 128x x 16 h => 2048 bits (256 words)
-66 match True, score 1.000
-  r-180_flipx-1_invert-1_cols-left
-69 match True, score 1.000
-  r-180_flipx-1_invert-1_cols-downr
-Tries: 80
-Best score: 1.000, r-180_flipx-1_invert-1_cols-left
-Keep matches: 2
-  Writing DMG_ROM/r-180_flipx-1_invert-1_cols-left.bin
-  Writing DMG_ROM/r-180_flipx-1_invert-1_cols-downr.bin
-air% 
-```
-
-Having two potential values, we can disassemble each to find the right
-one.  Sure enough, `r-180_flipx-1_invert-1_cols-downr.bin` contains
-the right bytes because it loads 0xFFFE into the stack pointer.
-
-```
-air% r2 -a gb r-180_flipx-1_invert-1_cols-downr.bin
-[0x00000000]> pd 1
-            0x00000000      31feff         ld sp, 0xfffe
-^D
-air% r2 -a gb r-180_flipx-1_invert-1_cols-left.bin 
-[0x00000000]> pd 1
-            0x00000000      311147         ld sp, 0x4711
-^D
-air% 
-```
-
 
