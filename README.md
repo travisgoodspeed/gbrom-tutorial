@@ -430,3 +430,14 @@ Grade 100       f5 06 19 78 86 23 05 20         --decode-cols-downl-swap -i -r 0
 dell% 
 ```
 
+### Loading the hex bytes into radare2
+
+In order to view the disassembly of the hex representation of the extracted bits in [radare2](http://github.com/radareorg/radare2), you can use the following:
+
+```
+; r2 malloc://256               # open radare2 with 256 bytes of memory available
+[0x00000000]> e asm.arch=gb     # set the gameboy architecture
+[0x00000000]> e asm.bits=8      # set the bits to 8
+[0x00000000]> wxf hex.txt       # load the hex file into memory starting at 0x0
+[0x00000000]> pD 0xff           # print 0xff bytes of disassembly
+```
