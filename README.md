@@ -89,7 +89,7 @@ Zoom is very important for these projects.  The `QAZ` keys handle
 zooming, with `Q` snapping to native resolution, `A` and `Z` zooming
 in and out.  On a mouse, holding `ctrl` and spinning the scroll wheel
 will also adjust the zoom.  With a trackpad, you might pinch to zoom,
-but only if you operating system supports it.
+but only if your operating system supports it.
 
 Spend a moment moving around the ROM photograph, guessing at what
 different structures are.  After that, we'll start marking up the
@@ -105,8 +105,8 @@ place a Row.  A thin black line will appear between those two points.
 You could repeat this to place all of the rows, but that would be
 labor intensive and might involve a lot of scrolling for very long
 ones.  Instead, keep your mouse on the right side but move it down a
-little.  When your crosshair lines up with the row, press `Shift+R` or
-the spacebar to drop another row with the same length and angle.
+little.  When your crosshair lines up with the row, press the spacebar
+to drop another row with the same length and angle.
 
 Repeating this across many rows should mark them out in short order.
 In the following screenshot, I've marked short segments of the first
@@ -137,7 +137,7 @@ the column and hit `C` to place a column line.  (Do **NOT** click
 a second time.)
 
 Repeat this by moving your mouse beneath the other last bits and
-pressing `Shift+C`.  As each column line is dropped across the row
+pressing the spacebar.  As each column line is dropped across the row
 lines, blue squares will appear over each bit.  The software now knows
 where the bits are, and in the next step we'll teach it to know the
 difference between a one and a zero.
@@ -208,7 +208,7 @@ can draw an attempt at a row with `R` and then delete it with `D`,
 without the software forgetting about your first starting position.
 
 After getting the first line drawn, move your mouse down the right
-side of the photograph, hitting `Shift+R` or the space bar whenever you
+side of the photograph, hitting the space bar whenever you
 pass a row to drop a line.  If you find that you marked the bit just a
 little off, you can use the `S` key to Set the position of the last
 line, moving it to the new mouse location.  Arrow keys and dragging
@@ -223,7 +223,7 @@ will remain at the original position.
 
 After drawing the long rows, draw the columns.  Just click once above
 the first bit to set a start point, then hit `C` beneath the last bit
-to draw a column.  `Shift+C` will drop a new column of the same angle
+to draw a column.  The spacebar will drop a new column of the same angle
 at another end point, so you can step through the image and draw all
 of the columns in short order.
 
