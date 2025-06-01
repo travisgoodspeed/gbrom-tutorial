@@ -437,6 +437,18 @@ Grade 100       f5 06 19 78 86 23 05 20         --decode-cols-downl-swap -i -r 0
 dell% 
 ```
 
+We can also have `gatorom` ask `goodasm` whether the assembly is valid
+in a particular language.  Not all languages support this, but the
+SM83 module can get a very accurate guess by looking for the Nintendo
+logo that exists in the GameBoy's ROM and in every GameBoy cartridge.
+
+```
+air% gatorom --solve --solve-goodasm sm83 bits.txt -o decoded.bin
+100   	31 fe ff af 21 ff 9f 32 	-cols-downr-i-r0-flipx.bin
+Exporting	--decode-cols-downr -i -r 0 --flipx 
+air%
+```
+
 ### Loading the hex bytes into radare2
 
 In order to view the disassembly of the hex representation of the
