@@ -349,18 +349,18 @@ quite different from the logically ordered bytes that a disassembler
 or emulator would prefer.  We'll first do this graphically, and then
 also see how to do it from the Unix command line.
 
-Before we begin, please install
-[MAME](https://github.com/mamedev/mame/releases) and make sure that
-its disassembler, `unidasm`, is within the PATH.  If you fail to do
-this, the solver will still work, but you'll miss out on seeing the
-disassembled code.
+Previous versions of this guide suggested installing MAME's `unidasm`
+disassembler or [Radare2](https://rada.re).  Those still work, but
+[GoodASM](https://github.com/travisgoodspeed/goodasm) is now included
+in MaskRomTool and works just fine for the GameBoy's SM83
+architecture.
 
 ### Decoding Graphically
 
 You can play around with decoding settings manually with
 Edit/Decoding.  Begin by setting the disassembly architecture to
-`LR35902` and the wordsize to `8`.  The flips, rotation, and banking
-will be solved for you in a bit, and the list of Flags at the bottom
+`goodasm/sm83` and the wordsize to `8`.  The flips, rotation, and banking
+will be solved for you in a bit, and the list of flags at the bottom
 shows you the options that would be passed to
 [GatoROM](https://github.com/travisgoodspeed/maskromtool/blob/master/GATOREADME.md)
 for decoding on the command line.
@@ -372,12 +372,11 @@ View/Solver.  Double-clicking a solution will reconfigure the decoder
 and update the hex and disassembly views, so that they can be quickly
 searched.
 
-Begin by using the Bytes tap of the Solver to solve for
-`0:31,1:fe,2:ff`, which means that the first three bytes will be `31
-fe ff`.  This is the LR35902 machine code for setting the stack
-pointer to `0xfffe`.  Double clicking on the solution `-z
---decode-cols-downr -i -r 180 --flipx` will apply those settings to
-the decoder.
+Begin by using the Bytes tap of the Solver to solve for `0:31`, which
+means that the first three bytes will be `31`.  This is the SM83
+machine code for setting the stack pointer, and it results in three
+potential decodings.  Double clicking on a solution will apply those
+settings to the decoder, updating the other views to match.
 
 ![Graphical solution](screenshots/solver.png)
 
@@ -389,6 +388,14 @@ project file.
 ![Screenshot of highlighted bytes in the GameBoy view.](screenshots/hexview.png)
 
 
+View/Disassembly will show the disassembled code, using the built-in
+GoodASM disassembler or external calls to Radare2 or Unidasm.  Jumping
+between the three solutions you have in your Solutions window, you'll
+find that `--decode-cols-downr -i -r 0 --flipx` decodes the first
+instruction to `ld sp, #0xfffe`.  That sets the stack pointer to the
+top of internal RAM, indicating that it's the correct decoding.
+
+![Screenshot of disassembly.](screenshots/goodasm.png)
 
 
 ### Decoding with GatoROM
@@ -432,7 +439,9 @@ dell%
 
 ### Loading the hex bytes into radare2
 
-In order to view the disassembly of the hex representation of the extracted bits in [radare2](http://github.com/radareorg/radare2), you can use the following:
+In order to view the disassembly of the hex representation of the
+extracted bits in [radare2](http://github.com/radareorg/radare2), you
+can use the following:
 
 ```
 ; r2 malloc://256               # open radare2 with 256 bytes of memory available
